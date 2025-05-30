@@ -1,12 +1,12 @@
 package co.juanpablancom.linkticprueba.inventario.application.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Builder
-@AllArgsConstructor
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductoResponse {
     private String id;
     private String nombre;

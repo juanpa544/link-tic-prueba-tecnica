@@ -16,11 +16,11 @@ public class ComprarUseCase {
 
     public InventarioModel ejecutar(String productoId, long cantidadReducir) {
 
-        ConsultarInventarioResponse inventarioActual = consultarInventarioUseCase.ejecutar(productoId); // Validación externa
-
         if (cantidadReducir <= 0) {
             throw new IllegalArgumentException("La cantidad a reducir debe ser mayor que cero.");
         }
+        
+        ConsultarInventarioResponse inventarioActual = consultarInventarioUseCase.ejecutar(productoId); // Validación externa
 
         if (inventarioActual.getCantidadDisponible() < cantidadReducir) {
             throw new InventarioInsuficienteException(inventarioActual.getNombreProducto(), inventarioActual.getCantidadDisponible(), cantidadReducir);

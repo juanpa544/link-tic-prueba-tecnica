@@ -1,5 +1,7 @@
 package co.juanpablancom.linkticprueba.inventario.application.usecase;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import co.juanpablancom.linkticprueba.inventario.application.dto.ConsultarInventarioResponse;
@@ -18,17 +20,17 @@ public class ConsultarInventarioUseCase {
     private final ProductoGateway productoGateway;
 
     public ConsultarInventarioResponse ejecutar(String productoId) {
-        InventarioModel inventario = inventarioQuery
-            .obtenerPorProductoId(productoId)
-            .orElseThrow(() -> new InventarioNoEncontradoException(productoId));
-
-        ProductoResponse producto = productoGateway.obtenerProductoPorId(productoId);
-
-        return new ConsultarInventarioResponse(
+        Optional<InventarioModel> inventario = inventarioQuery.obtenerPorProductoId(productoId);
+        if(inventario.isPresent()){
+            ProductoResponse producto = productoGateway.obtenerProductoPorId(productoId);
+            return new ConsultarInventarioResponse(
             producto.getId(),
             producto.getNombre(),
             producto.getPrecio(),
-            inventario.getCantidad()
+            inventario.get().getCantidad()
         );
+        }else{
+            throw new InventarioNoEncontradoException(productoId);
+        }
     }
 }
