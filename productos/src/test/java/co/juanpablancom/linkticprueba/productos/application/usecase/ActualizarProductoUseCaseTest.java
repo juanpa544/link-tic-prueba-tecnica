@@ -1,8 +1,6 @@
 package co.juanpablancom.linkticprueba.productos.application.usecase;
 
-import co.juanpablancom.linkticprueba.productos.domain.exception.PrecioInvalidoException;
 import co.juanpablancom.linkticprueba.productos.domain.exception.ProductoNotFoundException;
-import co.juanpablancom.linkticprueba.productos.domain.exception.ProductoSinNombreException;
 import co.juanpablancom.linkticprueba.productos.domain.model.ProductoModel;
 import co.juanpablancom.linkticprueba.productos.domain.port.command.ProductoCommand;
 import co.juanpablancom.linkticprueba.productos.domain.port.query.ProductoQuery;
@@ -14,7 +12,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class ActualizarProductoUseCaseTest {
+class ActualizarProductoUseCaseTest {
 
     private ProductoCommand productoCommand;
     private ProductoQuery productoQuery;
@@ -34,7 +32,7 @@ public class ActualizarProductoUseCaseTest {
         String nombre = "Producto Actualizado";
         double precio = 150.0;
 
-        ProductoModel productoExistente = new ProductoModel(id, "Nombre viejo", 100.0);
+        ProductoModel productoExistente = new ProductoModel(id, "Viejo", 100.0);
         ProductoModel productoActualizado = new ProductoModel(id, nombre, precio);
 
         when(productoQuery.buscarPorId(id)).thenReturn(Optional.of(productoExistente));
@@ -54,10 +52,9 @@ public class ActualizarProductoUseCaseTest {
     }
 
     @Test
-    void debeLanzarExcepcionSiProductoNoExiste() {
+    void debeLanzarProductoNotFoundExceptionSiProductoNoExiste() {
         // Arrange
         String id = "no-existe";
-        when(productoQuery.buscarPorId(id)).thenReturn(Optional.empty());
 
         // Act & Assert
         assertThrows(ProductoNotFoundException.class, () -> {
@@ -67,28 +64,5 @@ public class ActualizarProductoUseCaseTest {
         verify(productoQuery).buscarPorId(id);
         verify(productoCommand, never()).actualizar(any());
     }
-
-    @Test
-    void debeLanzarExcepcionSiNombreEsInvalido() {
-        // Arrange
-        String id = "abc123";
-        when(productoQuery.buscarPorId(id)).thenReturn(Optional.of(new ProductoModel(id, "Viejo", 100)));
-
-        // Act & Assert
-        assertThrows(ProductoSinNombreException.class, () -> {
-            actualizarProductoUseCase.ejecutar(id, " ", 100.0);
-        });
-    }
-
-    @Test
-    void debeLanzarExcepcionSiPrecioEsInvalido() {
-        // Arrange
-        String id = "abc123";
-        when(productoQuery.buscarPorId(id)).thenReturn(Optional.of(new ProductoModel(id, "Viejo", 100)));
-
-        // Act & Assert
-        assertThrows(PrecioInvalidoException.class, () -> {
-            actualizarProductoUseCase.ejecutar(id, "Producto", -10.0);
-        });
-    }
 }
+

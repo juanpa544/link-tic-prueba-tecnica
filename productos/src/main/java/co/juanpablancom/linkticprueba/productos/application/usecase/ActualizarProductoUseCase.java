@@ -15,10 +15,11 @@ public class ActualizarProductoUseCase {
     private final ProductoQuery productoQuery;
 
     public ProductoModel ejecutar(String id, String nombre, double precio) {
-        productoQuery.buscarPorId(id)
-                .orElseThrow(() -> new ProductoNotFoundException(id));
-
-        ProductoModel actualizado = new ProductoModel(id, nombre, precio);
-        return productoCommand.actualizar(actualizado);
+        if(productoQuery.buscarPorId(id).isPresent()){
+            ProductoModel actualizado = new ProductoModel(id, nombre, precio);
+            return productoCommand.actualizar(actualizado);
+        }else{
+            throw new ProductoNotFoundException(id);
+        }
     }
 }

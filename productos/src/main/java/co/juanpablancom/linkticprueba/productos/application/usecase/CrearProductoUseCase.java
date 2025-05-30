@@ -18,10 +18,11 @@ public class CrearProductoUseCase {
 
     public ProductoModel ejecutar(String nombre, double precio) {
         String id = UUID.randomUUID().toString();
-        if (productoQuery.buscarPorId(id).isPresent()) {
+        if(productoQuery.buscarPorId(id).isPresent()){
             throw new ProductoDuplicadoException(id);
+        }else{
+            ProductoModel producto = new ProductoModel(id, nombre, precio);
+            return productoCommand.crear(producto); 
         }
-        ProductoModel producto = new ProductoModel(id, nombre, precio);
-        return productoCommand.crear(producto);
     }
 }

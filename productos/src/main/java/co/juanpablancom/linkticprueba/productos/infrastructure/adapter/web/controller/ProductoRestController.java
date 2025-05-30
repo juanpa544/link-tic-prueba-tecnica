@@ -38,7 +38,7 @@ public class ProductoRestController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductoResponse> actualizarProducto(
-            @PathVariable String id,
+            @PathVariable("id") String id,
             @Valid @RequestBody ActualizarProductoRequest request
     ) {
         ProductoModel productoActualizado = productoService.actualizarProducto(id, request.getNombre(), request.getPrecio());
@@ -46,21 +46,21 @@ public class ProductoRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarProducto(@PathVariable String id) {
+    public ResponseEntity<Void> eliminarProducto(@PathVariable("id") String id) {
         productoService.eliminarProducto(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductoResponse> obtenerProducto(@PathVariable String id) {
+    public ResponseEntity<ProductoResponse> obtenerProducto(@PathVariable("id") String id) {
         ProductoModel producto = productoService.obtenerProducto(id);
         return ResponseEntity.ok(ProductoDtoMapper.MAPPER.toResponse(producto));
     }
 
     @GetMapping
     public ResponseEntity<PaginaProductoResponse> listarProductos(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name="size", defaultValue = "10") int size
     ) {
         List<ProductoModel> productos = productoService.listarProductos(page, size);
         long total = productoService.contarTotal();

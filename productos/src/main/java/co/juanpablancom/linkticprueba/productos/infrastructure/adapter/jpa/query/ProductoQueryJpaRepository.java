@@ -12,7 +12,7 @@ import co.juanpablancom.linkticprueba.productos.infrastructure.adapter.entity.Pr
 @Repository
 public interface ProductoQueryJpaRepository extends JpaRepository<ProductoEntity, String>{
 
-    Optional<ProductoEntity> findById(Long id);
+    Optional<ProductoEntity> findById(String id);
 
     Page<ProductoEntity> findAll(Pageable pageable);
 

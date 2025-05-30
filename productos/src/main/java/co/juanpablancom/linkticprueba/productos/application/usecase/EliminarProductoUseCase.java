@@ -14,10 +14,10 @@ public class EliminarProductoUseCase {
     private final ProductoQuery productoQuery;
 
     public String ejecutar(String id) {
-        if (productoQuery.buscarPorId(id).isEmpty()) {
+        if(productoQuery.buscarPorId(id).isPresent()){
+            return productoCommand.eliminar(id);
+        } else { 
             throw new ProductoNotFoundException(id);
         }
-
-        return productoCommand.eliminar(id);
     }
 }
