@@ -1,0 +1,25 @@
+package co.juanpablancom.linkticprueba.inventario.domain.model;
+
+import co.juanpablancom.linkticprueba.inventario.domain.exception.CantidadInvalidaException;
+import co.juanpablancom.linkticprueba.inventario.domain.exception.ProductoIdInvalidoException;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+public class InventarioModel {
+    private String productoId;
+    private long cantidad;
+
+    public InventarioModel(String productoId, long cantidad) {
+        if (productoId == null || productoId.trim().isEmpty()) {
+            throw new ProductoIdInvalidoException();
+        }
+        if (cantidad <= 0) {
+            throw new CantidadInvalidaException(cantidad);
+        }
+
+        this.productoId = productoId;
+        this.cantidad = cantidad;
+    }
+}
