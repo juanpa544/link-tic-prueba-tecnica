@@ -135,6 +135,9 @@ Agregar métricas e integraciones con Zipkin o Jaeger.
 Para cualquier duda técnica sobre esta implementación, puedes comunicarte con:
 
 Juan Pablo Blanco Márquez
+
 Desarrollador Backend
+
 📧 jblancomarquez54@gmail.com
+
 📱 +57 350 5185330
