@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ProductoModel {
-    private Long id;
+    private String id;
     private String nombre;
     private double precio;
 
-    public ProductoModel(Long id, String nombre, double precio) {
+    public ProductoModel(String id, String nombre, double precio) {
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new ProductoSinNombreException();
         }
