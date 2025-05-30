@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import co.juanpablancom.linkticprueba.productos.application.usecase.ActualizarProductoUseCase;
 import co.juanpablancom.linkticprueba.productos.application.usecase.BuscarProductoPorIdUseCase;
+import co.juanpablancom.linkticprueba.productos.application.usecase.ContarProductosUseCase;
 import co.juanpablancom.linkticprueba.productos.application.usecase.CrearProductoUseCase;
 import co.juanpablancom.linkticprueba.productos.application.usecase.EliminarProductoUseCase;
 import co.juanpablancom.linkticprueba.productos.application.usecase.ListarProductosUseCase;
@@ -22,6 +23,7 @@ private final CrearProductoUseCase crearProductoUseCase;
     private final ListarProductosUseCase listarProductosUseCase;
     private final ActualizarProductoUseCase actualizarProductoUseCase;
     private final EliminarProductoUseCase eliminarProductoUseCase;
+    private final ContarProductosUseCase contarProductosUseCase;
 
     public ProductoModel crearProducto(String nombre, double precio) {
         return crearProductoUseCase.ejecutar(nombre, precio);
@@ -41,5 +43,9 @@ private final CrearProductoUseCase crearProductoUseCase;
 
     public String eliminarProducto(String id) {
         return eliminarProductoUseCase.ejecutar(id);
+    }
+
+    public Long contarTotal(){
+        return contarProductosUseCase.ejecutar();
     }
 }
