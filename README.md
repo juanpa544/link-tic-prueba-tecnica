@@ -88,7 +88,7 @@ Separación clara por capas (adaptadores, aplicación, dominio).
 
 Patrón de arquitectura Hexagonal (Ports & Adapters).
 
-###🧑‍💻 Guía para Nuevos Desarrolladores
+## 🧑‍💻 Guía para Nuevos Desarrolladores
 1. Clona el proyecto.
 
 2. Asegúrate de tener Docker instalado.
@@ -101,10 +101,10 @@ Patrón de arquitectura Hexagonal (Ports & Adapters).
 
 Agrega nuevas funcionalidades siguiendo el patrón de casos de uso y arquitectura hexagonal.
 
-###📌 Consideraciones
+## 📌 Consideraciones
 Se utilizaron bases de datos embebidas por simplicidad, velocidad de desarrollo y portabilidad.
 
-###📚 Tecnologías Usadas
+## 📚 Tecnologías Usadas
 Java 21
 
 Spring Boot 3
@@ -119,7 +119,7 @@ H2 Embedded Database
 
 REST + JSON:API
 
-##✅ Pendientes / Mejoras Futuras
+## ✅ Pendientes / Mejoras Futuras
 Implementar base de datos externa en producción.
 
 Agregar monitoreo con Prometheus + Grafana.
@@ -128,7 +128,7 @@ Registrar eventos en Kafka u otro broker.
 
 Agregar métricas e integraciones con Zipkin o Jaeger.
 
-##📬 Contacto
+## 📬 Contacto
 Para cualquier duda técnica sobre esta implementación, puedes comunicarte con:
 
 Juan Pablo Blanco Márquez
