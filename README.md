@@ -71,12 +71,15 @@ docker-compose up --build
 Esto levantará ambos microservicios expuestos en:
 
 Productos: http://localhost:8080
+
 Inventario: http://localhost:8082
 
 Swagger disponible en:
 
-http://localhost:8080/swagger-ui/index.html
 http://localhost:8082/swagger-ui/index.html
+
+http://localhost:8080/swagger-ui/index.html
+
 
 ###📐 Arquitectura
 
