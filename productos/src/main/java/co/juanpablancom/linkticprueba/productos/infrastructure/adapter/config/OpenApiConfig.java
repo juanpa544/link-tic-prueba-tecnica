@@ -12,8 +12,8 @@ public class OpenApiConfig {
     public OpenAPI apiInventarioOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("API - Microservicio de Inventario")
+                        .title("API - Microservicio de Productos")
                         .version("1.0")
-                        .description("Documentación de endpoints del microservicio de inventario"));
+                        .description("Documentación de endpoints del microservicio de productos"));
     }
 }
