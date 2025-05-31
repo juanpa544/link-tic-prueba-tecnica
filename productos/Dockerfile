@@ -1,11 +1,4 @@
-# Etapa 1: Build con Gradle
-FROM gradle:7.6.0-jdk17-alpine AS builder
-COPY --chown=gradle:gradle . /home/app
-WORKDIR /home/app
-RUN gradle build --no-daemon
-
-# Etapa 2: Runtime
 FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /app
-COPY --from=builder /home/app/build/libs/*.jar app.jar
+COPY build/libs/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
