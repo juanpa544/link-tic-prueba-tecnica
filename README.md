@@ -2,7 +2,7 @@
 
 ## 🧠 Descripción General
 
-Esta solución consiste en dos microservicios independientes que gestionan productos e inventario, comunicándose entre sí vía HTTP utilizando el estándar **JSON:API**. Los microservicios están desacoplados, orquestados mediante **Docker Compose**, y cada uno cuenta con su propia base de datos embebida (H2) para facilitar el despliegue y pruebas. Se han aplicado buenas prácticas de arquitectura, pruebas, documentación y seguridad.
+Esta solución consiste en dos microservicios independientes que gestionan productos e inventario, comunicándose entre sí vía HTTP utilizando el estándar **JSON:API**. Los microservicios están desacoplados, orquestados mediante **Docker Compose**, y cada uno cuenta con su propia base de datos embebida (H2) para facilitar el despliegue y pruebas. Se han aplicado buenas prácticas de arquitectura hexagonal, pruebas y documentación.
 
 ---
 
