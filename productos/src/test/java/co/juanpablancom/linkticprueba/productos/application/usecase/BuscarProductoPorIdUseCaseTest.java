@@ -26,7 +26,7 @@ class BuscarProductoPorIdUseCaseTest {
     @Test
     void debeRetornarProductoCuandoExiste() {
         // Arrange
-        String id = "abc123";
+        Long id = (long) 1000;
         ProductoModel producto = new ProductoModel(id, "Producto de prueba", 100.0);
         when(productoQuery.buscarPorId(id)).thenReturn(Optional.of(producto));
 
@@ -44,7 +44,7 @@ class BuscarProductoPorIdUseCaseTest {
     @Test
     void debeLanzarExcepcionCuandoProductoNoExiste() {
         // Arrange
-        String id = "no-existe";
+        Long id = (long) 5000;
         when(productoQuery.buscarPorId(id)).thenReturn(Optional.empty());
 
         // Act & Assert
@@ -52,7 +52,7 @@ class BuscarProductoPorIdUseCaseTest {
             buscarProductoPorIdUseCase.ejecutar(id);
         });
 
-        assertTrue(exception.getMessage().contains(id));
+        assertTrue(exception.getMessage().contains(id.toString()));
         verify(productoQuery).buscarPorId(id);
     }
 }

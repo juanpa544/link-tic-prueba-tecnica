@@ -38,7 +38,7 @@ public class ProductoRestController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductoResponse> actualizarProducto(
-            @PathVariable("id") String id,
+            @PathVariable("id") Long id,
             @Valid @RequestBody ActualizarProductoRequest request
     ) {
         ProductoModel productoActualizado = productoService.actualizarProducto(id, request.getNombre(), request.getPrecio());
@@ -46,13 +46,13 @@ public class ProductoRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarProducto(@PathVariable("id") String id) {
+    public ResponseEntity<Void> eliminarProducto(@PathVariable("id") Long id) {
         productoService.eliminarProducto(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductoResponse> obtenerProducto(@PathVariable("id") String id) {
+    public ResponseEntity<ProductoResponse> obtenerProducto(@PathVariable("id") Long id) {
         ProductoModel producto = productoService.obtenerProducto(id);
         return ResponseEntity.ok(ProductoDtoMapper.MAPPER.toResponse(producto));
     }

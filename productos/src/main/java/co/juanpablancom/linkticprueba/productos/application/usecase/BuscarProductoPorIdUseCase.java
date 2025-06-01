@@ -13,7 +13,7 @@ import lombok.Builder;
 public class BuscarProductoPorIdUseCase {
     private final ProductoQuery productoQuery;
 
-    public ProductoModel ejecutar(String id) {
+    public ProductoModel ejecutar(Long id) {
         try{
             ProductoModel producto = productoQuery.buscarPorId(id).get();
             return producto;

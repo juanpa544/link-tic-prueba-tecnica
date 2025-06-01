@@ -29,7 +29,7 @@ private final CrearProductoUseCase crearProductoUseCase;
         return crearProductoUseCase.ejecutar(nombre, precio);
     }
 
-    public ProductoModel obtenerProducto(String id) {
+    public ProductoModel obtenerProducto(Long id) {
         return buscarProductoPorIdUseCase.ejecutar(id);
     }
 
@@ -37,11 +37,11 @@ private final CrearProductoUseCase crearProductoUseCase;
         return listarProductosUseCase.ejecutar(page, size);
     }
 
-    public ProductoModel actualizarProducto(String id, String nombre, double precio) {
+    public ProductoModel actualizarProducto(Long id, String nombre, double precio) {
         return actualizarProductoUseCase.ejecutar(id, nombre, precio);
     }
 
-    public String eliminarProducto(String id) {
+    public Long eliminarProducto(Long id) {
         return eliminarProductoUseCase.ejecutar(id);
     }
 

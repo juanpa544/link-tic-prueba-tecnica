@@ -28,15 +28,15 @@ class EliminarProductoUseCaseTest {
     @Test
     void debeEliminarProductoExitosamente() {
         // Arrange
-        String id = "producto123";
+        Long id = (long) 123;
         when(productoQuery.buscarPorId(id)).thenReturn(Optional.of(new ProductoModel(id, "Producto", 100.0)));
-        when(productoCommand.eliminar(id)).thenReturn("Producto eliminado: " + id);
+        when(productoCommand.eliminar(id)).thenReturn(id);
 
         // Act
-        String resultado = eliminarProductoUseCase.ejecutar(id);
+        Long resultado = eliminarProductoUseCase.ejecutar(id);
 
         // Assert
-        assertEquals("Producto eliminado: " + id, resultado);
+        assertEquals(id, resultado);
         verify(productoQuery).buscarPorId(id);
         verify(productoCommand).eliminar(id);
     }
@@ -44,13 +44,13 @@ class EliminarProductoUseCaseTest {
     @Test
     void debeLanzarExcepcionSiProductoNoExiste() {
         // Arrange
-        String id = "noExiste123";
+        Long id = (long) 123;
         when(productoQuery.buscarPorId(id)).thenReturn(Optional.empty());
 
         // Act & Assert
         assertThrows(ProductoNotFoundException.class, () -> eliminarProductoUseCase.ejecutar(id));
 
         verify(productoQuery).buscarPorId(id);
-        verify(productoCommand, never()).eliminar(anyString());
+        verify(productoCommand, never()).eliminar(anyLong());
     }
 }

@@ -13,7 +13,7 @@ public class EliminarProductoUseCase {
     private final ProductoCommand productoCommand;
     private final ProductoQuery productoQuery;
 
-    public String ejecutar(String id) {
+    public Long ejecutar(Long id) {
         if(productoQuery.buscarPorId(id).isPresent()){
             return productoCommand.eliminar(id);
         } else { 

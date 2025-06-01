@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import co.juanpablancom.linkticprueba.productos.infrastructure.adapter.entity.ProductoEntity;
 
 @Repository
-public interface ProductoCommandJpaRepository extends JpaRepository<ProductoEntity, String>{
+public interface ProductoCommandJpaRepository extends JpaRepository<ProductoEntity, Long>{
 
 }

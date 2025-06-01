@@ -29,8 +29,8 @@ class ListarProductosUseCaseTest {
         int size = 2;
 
         List<ProductoModel> productosSimulados = List.of(
-            new ProductoModel("id1", "Producto 1", 10.0),
-            new ProductoModel("id2", "Producto 2", 20.0)
+            new ProductoModel(Long.valueOf(123), "Producto 1", 10.0),
+            new ProductoModel(Long.valueOf(124), "Producto 2", 20.0)
         );
 
         when(productoQuery.listarProductos(page, size)).thenReturn(productosSimulados);

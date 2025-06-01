@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 public class UseCaseConfig {
 
     @Bean
-    public CrearProductoUseCase crearProductoUseCase(ProductoCommand command, ProductoQuery query) {
-        return new CrearProductoUseCase(command, query);
+    public CrearProductoUseCase crearProductoUseCase(ProductoCommand command) {
+        return new CrearProductoUseCase(command);
     }
 
     @Bean
