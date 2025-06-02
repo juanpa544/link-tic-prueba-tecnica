@@ -6,7 +6,7 @@ import java.util.Optional;
 import co.juanpablancom.linkticprueba.productos.domain.model.ProductoModel;
 
 public interface ProductoQuery {
-    Optional<ProductoModel> buscarPorId(Long id);
+    Optional<ProductoModel> buscarPorId(long id);
     List<ProductoModel> listarProductos(int page, int size);
     long contarTotal();
 }

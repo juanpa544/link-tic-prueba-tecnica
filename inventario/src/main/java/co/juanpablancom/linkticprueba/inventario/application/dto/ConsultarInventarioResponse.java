@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConsultarInventarioResponse {
-    private String productoId;
+    private long productoId;
     private String nombreProducto;
     private double precio;
     private long cantidadDisponible;

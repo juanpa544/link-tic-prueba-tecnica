@@ -27,7 +27,7 @@ public class ProductoCommandImpl implements ProductoCommand {
     }
 
     @Override
-    public Long eliminar(Long id) {
+    public Long eliminar(long id) {
         productoCommandJpaRepository.deleteById(id);
         return id;
     }

@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class ProductoClientImpl implements ProductoGateway {
+public class ProductoGatewayImpl implements ProductoGateway {
 
     private final RestTemplate restTemplate;
 
@@ -20,7 +20,7 @@ public class ProductoClientImpl implements ProductoGateway {
     private String productosServiceUrl;
 
     @Override
-    public ProductoResponse obtenerProductoPorId(String productoId) {
+    public ProductoResponse obtenerProductoPorId(long productoId) {
         try {
             String url = productosServiceUrl + "/productos/" + productoId;
             return restTemplate.getForObject(url, ProductoResponse.class);

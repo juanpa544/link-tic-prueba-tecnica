@@ -13,10 +13,10 @@ public class ProductoModelTest {
     @Test
     void debeCrearProductoCorrectamente() {
         // Act
-        ProductoModel producto = new ProductoModel((long) 123,"Producto válido", 100.0);
+        ProductoModel producto = new ProductoModel( 123,"Producto válido", 100.0);
 
         // Assert
-        assertEquals((long) 123, producto.getId());
+        assertEquals( 123, producto.getId());
         assertEquals("Producto válido", producto.getNombre());
         assertEquals(100.0, producto.getPrecio());
     }

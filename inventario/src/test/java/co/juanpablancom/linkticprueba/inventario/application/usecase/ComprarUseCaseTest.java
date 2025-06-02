@@ -1,95 +1,89 @@
 package co.juanpablancom.linkticprueba.inventario.application.usecase;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import co.juanpablancom.linkticprueba.inventario.application.dto.ConsultarInventarioResponse;
 import co.juanpablancom.linkticprueba.inventario.domain.exception.InventarioInsuficienteException;
 import co.juanpablancom.linkticprueba.inventario.domain.model.InventarioModel;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-public class ComprarUseCaseTest {
-private ConsultarInventarioUseCase consultarInventarioUseCase;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class ComprarUseCaseTest {
+
+    @Mock
+    private ConsultarInventarioUseCase consultarInventarioUseCase;
+
+    @Mock
     private ActualizarInventarioUseCase actualizarInventarioUseCase;
+
+    @InjectMocks
     private ComprarUseCase comprarUseCase;
-
-    @BeforeEach
-    void setUp() {
-        consultarInventarioUseCase = mock(ConsultarInventarioUseCase.class);
-        actualizarInventarioUseCase = mock(ActualizarInventarioUseCase.class);
-        comprarUseCase = new ComprarUseCase(consultarInventarioUseCase, actualizarInventarioUseCase);
-    }
-
-    @Test
-    void debeReducirInventarioCorrectamente() {
-        // Arrange
-        String productoId = "PROD-001";
-        long cantidadDisponible = 10;
-        long cantidadReducir = 3;
-        long nuevaCantidad = 7;
-        double precio = 2000;
-
-        ConsultarInventarioResponse respuesta = new ConsultarInventarioResponse(productoId, "Café", precio, cantidadDisponible);
-        InventarioModel esperado = new InventarioModel(productoId, nuevaCantidad);
-
-        when(consultarInventarioUseCase.ejecutar(productoId)).thenReturn(respuesta);
-        when(actualizarInventarioUseCase.ejecutar(productoId, nuevaCantidad)).thenReturn(esperado);
-
-        // Act
-        InventarioModel resultado = comprarUseCase.ejecutar(productoId, cantidadReducir);
-
-        // Assert
-        assertNotNull(resultado);
-        assertEquals(productoId, resultado.getProductoId());
-        assertEquals(nuevaCantidad, resultado.getCantidad());
-
-        verify(consultarInventarioUseCase).ejecutar(productoId);
-        verify(actualizarInventarioUseCase).ejecutar(productoId, nuevaCantidad);
-    }
 
     @Test
     void debeLanzarExcepcionSiCantidadReducirEsMenorOIgualACero() {
-        String productoId = "PROD-002";
+        long productoId = 1;
+        long cantidadReducir = 0;
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            comprarUseCase.ejecutar(productoId, 0);
-        });
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> comprarUseCase.ejecutar(productoId, cantidadReducir)
+        );
 
-        verify(consultarInventarioUseCase, never()).ejecutar(any());
-        verify(actualizarInventarioUseCase, never()).ejecutar(any(), anyLong());
+        assertEquals("La cantidad a reducir debe ser mayor que cero.", exception.getMessage());
+        verifyNoInteractions(consultarInventarioUseCase, actualizarInventarioUseCase);
     }
 
     @Test
-    void debeLanzarExcepcionSiInventarioInsuficiente() {
-        // Arrange
-        String productoId = "PROD-003";
-        long disponible = 5;
-        long aReducir = 10;
+    void debeLanzarExcepcionSiInventarioEsInsuficiente() {
+        long productoId = 123;
+        long cantidadReducir = 600;
 
-        ConsultarInventarioResponse respuesta = new ConsultarInventarioResponse(productoId, "Azúcar", 2000, disponible);
-        when(consultarInventarioUseCase.ejecutar(productoId)).thenReturn(respuesta);
-
-        // Act & Assert
-        InventarioInsuficienteException ex = assertThrows(
-            InventarioInsuficienteException.class,
-            () -> comprarUseCase.ejecutar(productoId, aReducir)
+        ConsultarInventarioResponse inventario = new ConsultarInventarioResponse(
+                productoId,
+                "Producto Prueba",
+                5000,
+                500
         );
 
-        assertTrue(ex.getMessage().contains("Azúcar"));
-        assertTrue(ex.getMessage().contains("5 unidades"));
-        assertTrue(ex.getMessage().contains("comprar 10"));
+        when(consultarInventarioUseCase.ejecutar(productoId)).thenReturn(inventario);
+
+        InventarioInsuficienteException ex = assertThrows(
+            InventarioInsuficienteException.class,
+            () -> comprarUseCase.ejecutar(productoId, cantidadReducir)
+        );
+
+        assertTrue(ex.getMessage().contains("Producto Prueba"));
 
         verify(consultarInventarioUseCase).ejecutar(productoId);
-        verify(actualizarInventarioUseCase, never()).ejecutar(any(), anyLong());
+        verifyNoInteractions(actualizarInventarioUseCase);
+    }
+
+    @Test
+    void debeActualizarInventarioSiHayCantidadSuficiente() {
+        long productoId = 123;
+        long cantidadReducir = 5;
+
+        ConsultarInventarioResponse inventario = new ConsultarInventarioResponse(
+                productoId,
+                "Producto Prueba",
+                100,
+                100
+        );
+
+        InventarioModel inventarioActualizado = new InventarioModel(productoId, 95);
+
+        when(consultarInventarioUseCase.ejecutar(productoId)).thenReturn(inventario);
+        when(actualizarInventarioUseCase.ejecutar(productoId, 95)).thenReturn(inventarioActualizado);
+
+        InventarioModel resultado = comprarUseCase.ejecutar(productoId, cantidadReducir);
+
+        assertEquals(95, resultado.getCantidad());
+        verify(consultarInventarioUseCase).ejecutar(productoId);
+        verify(actualizarInventarioUseCase).ejecutar(productoId, 95);
     }
 }

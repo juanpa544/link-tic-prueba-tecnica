@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class InventarioModel {
-    private String productoId;
+    private long productoId;
     private long cantidad;
 
-    public InventarioModel(String productoId, long cantidad) {
-        if (productoId == null || productoId.trim().isEmpty()) {
+    public InventarioModel(long productoId, long cantidad) {
+        if (productoId < 0) {
             throw new ProductoIdInvalidoException();
         }
         if (cantidad <= 0) {

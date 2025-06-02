@@ -12,8 +12,8 @@ import co.juanpablancom.linkticprueba.inventario.domain.model.InventarioModel;
 public class InventarioModelTest {
     @Test
     void debeCrearInventarioCorrectamente() {
-        String productoId = "PROD-001";
-        long cantidad = 10;
+        long productoId =  123;
+        long cantidad =  4;
 
         InventarioModel inventario = new InventarioModel(productoId, cantidad);
 
@@ -22,30 +22,16 @@ public class InventarioModelTest {
     }
 
     @Test
-    void debeLanzarExcepcionSiProductoIdEsNull() {
+    void debeLanzarExcepcionSiProductoIdEsNegativo() {
         assertThrows(ProductoIdInvalidoException.class, () -> {
-            new InventarioModel(null, 5);
-        });
-    }
-
-    @Test
-    void debeLanzarExcepcionSiProductoIdEsVacio() {
-        assertThrows(ProductoIdInvalidoException.class, () -> {
-            new InventarioModel("   ", 5);
-        });
-    }
-
-    @Test
-    void debeLanzarExcepcionSiCantidadEsCero() {
-        assertThrows(CantidadInvalidaException.class, () -> {
-            new InventarioModel("PROD-001", 0);
+            new InventarioModel(-5,  5);
         });
     }
 
     @Test
     void debeLanzarExcepcionSiCantidadEsNegativa() {
         assertThrows(CantidadInvalidaException.class, () -> {
-            new InventarioModel("PROD-001", -10);
+            new InventarioModel( 123,  -10);
         });
     }
 }

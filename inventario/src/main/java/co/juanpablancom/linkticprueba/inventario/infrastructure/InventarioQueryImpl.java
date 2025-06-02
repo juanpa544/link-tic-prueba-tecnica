@@ -17,7 +17,7 @@ public class InventarioQueryImpl implements InventarioQuery {
     private final InventarioQueryJpaRepository inventarioQueryJpaRepository;
 
     @Override
-    public Optional<InventarioModel> obtenerPorProductoId(String productoId) {
+    public Optional<InventarioModel> obtenerPorProductoId(long productoId) {
         return inventarioQueryJpaRepository.findByProductoId(productoId)
                 .map(InventarioMapper.MAPPER::toModel);
     }

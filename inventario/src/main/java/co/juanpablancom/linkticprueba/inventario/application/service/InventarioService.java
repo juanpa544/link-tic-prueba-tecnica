@@ -17,7 +17,7 @@ public class InventarioService {
     private final ActualizarInventarioUseCase actualizarInventarioUseCase;
     private final ComprarUseCase comprarUseCase;
 
-    public ConsultarInventarioResponse consultarInventario(String productoId) {
+    public ConsultarInventarioResponse consultarInventario(long productoId) {
         return consultarInventarioUseCase.ejecutar(productoId);
     }
 
@@ -25,7 +25,7 @@ public class InventarioService {
         actualizarInventarioUseCase.ejecutar(request.getProductoId(), request.getCantidad());
     }
 
-    public void aplicarCompra(String productoId, long cantidadComprada) {
+    public void aplicarCompra(long productoId, long cantidadComprada) {
         comprarUseCase.ejecutar(productoId, cantidadComprada);
     }
 }

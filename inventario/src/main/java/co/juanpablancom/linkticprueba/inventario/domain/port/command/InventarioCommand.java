@@ -4,6 +4,6 @@ import co.juanpablancom.linkticprueba.inventario.domain.model.InventarioModel;
 
 public interface InventarioCommand {
 
-    InventarioModel actualizarCantidad(String productoId, long nuevaCantidad);
+    InventarioModel actualizarCantidad(long productoId, long nuevaCantidad);
     
 }

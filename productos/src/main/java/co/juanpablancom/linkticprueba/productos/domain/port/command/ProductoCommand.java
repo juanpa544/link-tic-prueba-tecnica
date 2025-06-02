@@ -8,6 +8,6 @@ public interface ProductoCommand {
 
 	ProductoModel actualizar(ProductoModel productoModel);
 
-	Long eliminar(Long id);
+	Long eliminar(long id);
     
 }

@@ -28,7 +28,7 @@ class EliminarProductoUseCaseTest {
     @Test
     void debeEliminarProductoExitosamente() {
         // Arrange
-        Long id = (long) 123;
+        long id =  123;
         when(productoQuery.buscarPorId(id)).thenReturn(Optional.of(new ProductoModel(id, "Producto", 100.0)));
         when(productoCommand.eliminar(id)).thenReturn(id);
 
@@ -44,7 +44,7 @@ class EliminarProductoUseCaseTest {
     @Test
     void debeLanzarExcepcionSiProductoNoExiste() {
         // Arrange
-        Long id = (long) 123;
+        long id =  123;
         when(productoQuery.buscarPorId(id)).thenReturn(Optional.empty());
 
         // Act & Assert

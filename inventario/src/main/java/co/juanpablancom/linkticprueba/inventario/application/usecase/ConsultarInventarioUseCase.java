@@ -19,7 +19,7 @@ public class ConsultarInventarioUseCase {
     private final InventarioQuery inventarioQuery;
     private final ProductoGateway productoGateway;
 
-    public ConsultarInventarioResponse ejecutar(String productoId) {
+    public ConsultarInventarioResponse ejecutar(long productoId) {
         Optional<InventarioModel> inventario = inventarioQuery.obtenerPorProductoId(productoId);
         if(inventario.isPresent()){
             ProductoResponse producto = productoGateway.obtenerProductoPorId(productoId);

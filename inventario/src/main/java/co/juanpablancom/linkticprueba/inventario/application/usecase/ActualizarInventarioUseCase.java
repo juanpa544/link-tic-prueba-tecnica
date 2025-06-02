@@ -15,7 +15,7 @@ public class ActualizarInventarioUseCase {
     private final InventarioCommand inventarioCommand;
     private final ProductoGateway productoGateway;
 
-    public InventarioModel ejecutar(String productoId, long nuevaCantidad) {
+    public InventarioModel ejecutar(long productoId, long nuevaCantidad) {
 
         // Validar que el producto exista en el microservicio de productos
         try {
@@ -25,7 +25,7 @@ public class ActualizarInventarioUseCase {
         }
 
         InventarioModel nuevoInventario = inventarioCommand.actualizarCantidad(productoId, nuevaCantidad);
-        System.out.println("!!! Inventario actualizado → productoId: " + productoId + ", cantidad: " + nuevaCantidad + " !!!");
+        System.out.println("!!! Inventario actualizado --> productoId: " + productoId + ", cantidad: " + nuevaCantidad + " !!!");
         return nuevoInventario;
     }
 }

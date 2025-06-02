@@ -28,7 +28,7 @@ class ActualizarProductoUseCaseTest {
     @Test
     void debeActualizarProductoExitosamente() {
         // Arrange
-        Long id = (long) 123;
+        long id =  123;
         String nombre = "Producto Actualizado";
         double precio = 150.0;
 
@@ -54,7 +54,7 @@ class ActualizarProductoUseCaseTest {
     @Test
     void debeLanzarProductoNotFoundExceptionSiProductoNoExiste() {
         // Arrange
-        Long id = (long) 456;
+        long id =  456;
 
         // Act & Assert
         assertThrows(ProductoNotFoundException.class, () -> {
