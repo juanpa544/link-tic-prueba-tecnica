@@ -13,10 +13,10 @@ public class ProductoModelTest {
     @Test
     void debeCrearProductoCorrectamente() {
         // Act
-        ProductoModel producto = new ProductoModel("123", "Producto válido", 100.0);
+        ProductoModel producto = new ProductoModel( 123,"Producto válido", 100.0);
 
         // Assert
-        assertEquals("123", producto.getId());
+        assertEquals( 123, producto.getId());
         assertEquals("Producto válido", producto.getNombre());
         assertEquals(100.0, producto.getPrecio());
     }
@@ -24,18 +24,18 @@ public class ProductoModelTest {
     @Test
     void debeLanzarExcepcionSiNombreEsNuloOVacio() {
         assertThrows(ProductoSinNombreException.class, () -> {
-            new ProductoModel("123", "   ", 100.0);
+            new ProductoModel("   ", 100.0);
         });
 
         assertThrows(ProductoSinNombreException.class, () -> {
-            new ProductoModel("123", null, 100.0);
+            new ProductoModel(null, 100.0);
         });
     }
 
     @Test
     void debeLanzarExcepcionSiPrecioEsNegativo() {
         assertThrows(PrecioInvalidoException.class, () -> {
-            new ProductoModel("123", "Producto", -5.0);
+            new ProductoModel("Producto", -5.0);
         });
     }
 }

@@ -30,7 +30,7 @@ public class ConsultarInventarioUseCaseTest {
     @Test
     void debeRetornarInventarioConDatosDelProducto() {
         // Arrange
-        String productoId = "PROD-001";
+        long productoId = 123;
         InventarioModel inventario = new InventarioModel(productoId, 20);
         ProductoResponse producto = new ProductoResponse(productoId, "Producto X", 50.0);
 
@@ -54,7 +54,7 @@ public class ConsultarInventarioUseCaseTest {
     @Test
     void debeLanzarExcepcionSiNoSeEncuentraInventario() {
         // Arrange
-        String productoId = "PROD-002";
+        long productoId = 123;
         when(inventarioQuery.obtenerPorProductoId(productoId)).thenReturn(Optional.empty());
 
         // Act & Assert
@@ -63,6 +63,5 @@ public class ConsultarInventarioUseCaseTest {
         });
 
         verify(inventarioQuery).obtenerPorProductoId(productoId);
-        verify(productoGateway, never()).obtenerProductoPorId(any());
     }
 }

@@ -64,7 +64,7 @@ class ProductoRestControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String id = JsonPath.read(response, "$.id");
+        long id = JsonPath.parse(response).read("$.id", Long.class);
 
         mockMvc.perform(get("/productos/" + id))
                 .andExpect(status().isOk())
@@ -80,7 +80,7 @@ class ProductoRestControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String id = JsonPath.read(response, "$.id");
+        long id = JsonPath.parse(response).read("$.id", Long.class);
 
         ActualizarProductoRequest update = new ActualizarProductoRequest("Actualizado", 200.0);
 
@@ -101,7 +101,7 @@ class ProductoRestControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String id = JsonPath.read(response, "$.id");
+        long id = JsonPath.parse(response).read("$.id", Long.class);
 
         mockMvc.perform(delete("/productos/" + id))
                 .andExpect(status().isNoContent());

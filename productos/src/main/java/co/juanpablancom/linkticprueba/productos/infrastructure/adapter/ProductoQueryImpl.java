@@ -22,7 +22,7 @@ public class ProductoQueryImpl implements ProductoQuery{
     private ProductoQueryJpaRepository productoQueryJpaRepository;
     
     @Override
-    public Optional<ProductoModel> buscarPorId(String id) {
+    public Optional<ProductoModel> buscarPorId(long id) {
         return productoQueryJpaRepository.findById(id)
                 .map(ProductoMapper.MAPPER::toModel);
     }

@@ -19,7 +19,7 @@ public class InventarioEntity {
 
     @Id
     @Column(name = "producto_id")
-    private String productoId;
+    private long productoId;
 
     @Column(name = "cantidad")
     private long cantidad;

@@ -31,32 +31,35 @@ public class ProductoRestController {
     private final ProductoService productoService;
 
     @PostMapping
-    public ResponseEntity<ProductoResponse> crearProducto(@Valid @RequestBody CrearProductoRequest request) {
+    public ResponseEntity<ProductoResponse> crearProducto(@RequestBody @Valid CrearProductoRequest request) {
         ProductoModel productoCreado = productoService.crearProducto(request.getNombre(), request.getPrecio());
         return ResponseEntity.ok(ProductoDtoMapper.MAPPER.toResponse(productoCreado));
     }
-
+    
     @PutMapping("/{id}")
     public ResponseEntity<ProductoResponse> actualizarProducto(
-            @PathVariable("id") String id,
+            @PathVariable("id") long id,
             @Valid @RequestBody ActualizarProductoRequest request
     ) {
         ProductoModel productoActualizado = productoService.actualizarProducto(id, request.getNombre(), request.getPrecio());
         return ResponseEntity.ok(ProductoDtoMapper.MAPPER.toResponse(productoActualizado));
     }
-
+         
+    
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarProducto(@PathVariable("id") String id) {
+    public ResponseEntity<Void> eliminarProducto(@PathVariable("id") long id) {
         productoService.eliminarProducto(id);
         return ResponseEntity.noContent().build();
     }
-
+    
+    
     @GetMapping("/{id}")
-    public ResponseEntity<ProductoResponse> obtenerProducto(@PathVariable("id") String id) {
+    public ResponseEntity<ProductoResponse> obtenerProducto(@PathVariable("id") long id) {
         ProductoModel producto = productoService.obtenerProducto(id);
         return ResponseEntity.ok(ProductoDtoMapper.MAPPER.toResponse(producto));
     }
-
+     
+    
     @GetMapping
     public ResponseEntity<PaginaProductoResponse> listarProductos(
             @RequestParam(name = "page", defaultValue = "0") int page,
@@ -67,4 +70,5 @@ public class ProductoRestController {
         PaginaProductoResponse respuesta = ProductoDtoMapper.MAPPER.toPagina(productos, page, size, total);
         return ResponseEntity.ok(respuesta);
     }
+         
 }

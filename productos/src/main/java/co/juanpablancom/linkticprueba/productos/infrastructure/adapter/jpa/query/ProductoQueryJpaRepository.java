@@ -10,9 +10,9 @@ import org.springframework.stereotype.Repository;
 import co.juanpablancom.linkticprueba.productos.infrastructure.adapter.entity.ProductoEntity;
 
 @Repository
-public interface ProductoQueryJpaRepository extends JpaRepository<ProductoEntity, String>{
+public interface ProductoQueryJpaRepository extends JpaRepository<ProductoEntity, Long>{
 
-    Optional<ProductoEntity> findById(String id);
+    Optional<ProductoEntity> findById(long id);
 
     Page<ProductoEntity> findAll(Pageable pageable);
 

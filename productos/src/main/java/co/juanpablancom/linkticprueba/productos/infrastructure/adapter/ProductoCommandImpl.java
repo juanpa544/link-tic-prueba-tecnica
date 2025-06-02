@@ -16,8 +16,8 @@ public class ProductoCommandImpl implements ProductoCommand {
 
     @Override
     public ProductoModel crear(ProductoModel productoModel) {
-        productoCommandJpaRepository.save(ProductoMapper.MAPPER.toEntity(productoModel));
-        return productoModel;
+        ProductoModel productoCreado = ProductoMapper.MAPPER.toModel(productoCommandJpaRepository.save(ProductoMapper.MAPPER.toEntity(productoModel)));
+        return productoCreado;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class ProductoCommandImpl implements ProductoCommand {
     }
 
     @Override
-    public String eliminar(String id) {
+    public Long eliminar(long id) {
         productoCommandJpaRepository.deleteById(id);
         return id;
     }

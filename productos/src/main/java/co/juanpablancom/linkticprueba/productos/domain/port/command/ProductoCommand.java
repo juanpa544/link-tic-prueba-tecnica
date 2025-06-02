@@ -8,6 +8,6 @@ public interface ProductoCommand {
 
 	ProductoModel actualizar(ProductoModel productoModel);
 
-	String eliminar(String id);
+	Long eliminar(long id);
     
 }

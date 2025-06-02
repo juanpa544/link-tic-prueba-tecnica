@@ -24,7 +24,7 @@ public class InventarioRestController {
     private final InventarioService inventarioService;
 
     @GetMapping("/{productoId}")
-    public ResponseEntity<ConsultarInventarioResponse> consultarInventario(@PathVariable("productoId") String productoId) {
+    public ResponseEntity<ConsultarInventarioResponse> consultarInventario(@PathVariable("productoId") long productoId) {
         ConsultarInventarioResponse response = inventarioService.consultarInventario(productoId);
         return ResponseEntity.ok(response);
     }

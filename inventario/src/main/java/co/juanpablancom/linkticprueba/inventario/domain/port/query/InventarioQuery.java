@@ -5,5 +5,5 @@ import java.util.Optional;
 import co.juanpablancom.linkticprueba.inventario.domain.model.InventarioModel;
 
 public interface InventarioQuery {
-    Optional<InventarioModel> obtenerPorProductoId(String productoId);
+    Optional<InventarioModel> obtenerPorProductoId(long productoId);
 }

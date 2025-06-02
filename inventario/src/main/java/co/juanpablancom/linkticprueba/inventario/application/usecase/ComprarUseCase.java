@@ -14,7 +14,7 @@ public class ComprarUseCase {
     private final ConsultarInventarioUseCase consultarInventarioUseCase;
     private final ActualizarInventarioUseCase actualizarInventarioUseCase;
 
-    public InventarioModel ejecutar(String productoId, long cantidadReducir) {
+    public InventarioModel ejecutar(long productoId, long cantidadReducir) {
 
         if (cantidadReducir <= 0) {
             throw new IllegalArgumentException("La cantidad a reducir debe ser mayor que cero.");

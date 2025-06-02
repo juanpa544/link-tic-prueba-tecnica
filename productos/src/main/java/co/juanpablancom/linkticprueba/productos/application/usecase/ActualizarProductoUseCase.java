@@ -14,7 +14,7 @@ public class ActualizarProductoUseCase {
     private final ProductoCommand productoCommand;
     private final ProductoQuery productoQuery;
 
-    public ProductoModel ejecutar(String id, String nombre, double precio) {
+    public ProductoModel ejecutar(long id, String nombre, double precio) {
         if(productoQuery.buscarPorId(id).isPresent()){
             ProductoModel actualizado = new ProductoModel(id, nombre, precio);
             return productoCommand.actualizar(actualizado);
