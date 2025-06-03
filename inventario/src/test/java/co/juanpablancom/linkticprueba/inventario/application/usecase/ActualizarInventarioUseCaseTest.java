@@ -11,13 +11,15 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import co.juanpablancom.linkticprueba.inventario.application.dto.ProductoResponse;
+import co.juanpablancom.linkticprueba.inventario.application.dto.ProductoAttributes;
 import co.juanpablancom.linkticprueba.inventario.application.port.query.ProductoGateway;
 import co.juanpablancom.linkticprueba.inventario.domain.exception.ProductoExternoNoEncontradoException;
 import co.juanpablancom.linkticprueba.inventario.domain.model.InventarioModel;
 import co.juanpablancom.linkticprueba.inventario.domain.port.command.InventarioCommand;
+import co.juanpablancom.linkticprueba.inventario.infrastructure.web.controller.jsonapi.JsonApiProductoResponse;
 
 public class ActualizarInventarioUseCaseTest {
+
     private InventarioCommand inventarioCommand;
     private ProductoGateway productoGateway;
     private ActualizarInventarioUseCase useCase;
@@ -32,11 +34,14 @@ public class ActualizarInventarioUseCaseTest {
     @Test
     void debeActualizarInventarioSiProductoExiste() {
         // Arrange
-        long productoId =  123;
+        long productoId = 123;
         long nuevaCantidad = 20;
 
-        // Simula que el producto existe
-        when(productoGateway.obtenerProductoPorId(productoId)).thenReturn(new ProductoResponse(productoId, "Nombre", 123.45));
+        // Mock del producto en formato JSON:API
+        ProductoAttributes attributes = new ProductoAttributes("Nombre", 123.45);
+        JsonApiProductoResponse productoJsonApi = new JsonApiProductoResponse("producto", String.valueOf(productoId), attributes);
+
+        when(productoGateway.obtenerProductoPorId(productoId)).thenReturn(productoJsonApi);
         InventarioModel inventarioEsperado = new InventarioModel(productoId, nuevaCantidad);
         when(inventarioCommand.actualizarCantidad(productoId, nuevaCantidad)).thenReturn(inventarioEsperado);
 
@@ -55,10 +60,9 @@ public class ActualizarInventarioUseCaseTest {
     @Test
     void debeLanzarExcepcionSiProductoNoExiste() {
         // Arrange
-        long productoId =  123;
-        long cantidad =  5;
+        long productoId = 123;
+        long cantidad = 5;
 
-        // Simula que el gateway lanza excepción
         when(productoGateway.obtenerProductoPorId(productoId))
             .thenThrow(new ProductoExternoNoEncontradoException(productoId));
 

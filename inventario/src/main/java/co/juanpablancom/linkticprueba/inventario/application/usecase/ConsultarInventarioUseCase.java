@@ -5,11 +5,12 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import co.juanpablancom.linkticprueba.inventario.application.dto.ConsultarInventarioResponse;
-import co.juanpablancom.linkticprueba.inventario.application.dto.ProductoResponse;
+import co.juanpablancom.linkticprueba.inventario.application.dto.ProductoAttributes;
 import co.juanpablancom.linkticprueba.inventario.application.port.query.ProductoGateway;
 import co.juanpablancom.linkticprueba.inventario.domain.exception.InventarioNoEncontradoException;
 import co.juanpablancom.linkticprueba.inventario.domain.model.InventarioModel;
 import co.juanpablancom.linkticprueba.inventario.domain.port.query.InventarioQuery;
+import co.juanpablancom.linkticprueba.inventario.infrastructure.web.controller.jsonapi.JsonApiProductoResponse;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -21,16 +22,21 @@ public class ConsultarInventarioUseCase {
 
     public ConsultarInventarioResponse ejecutar(long productoId) {
         Optional<InventarioModel> inventario = inventarioQuery.obtenerPorProductoId(productoId);
-        if(inventario.isPresent()){
-            ProductoResponse producto = productoGateway.obtenerProductoPorId(productoId);
+
+        if (inventario.isPresent()) {
+            JsonApiProductoResponse productoJsonApi = productoGateway.obtenerProductoPorId(productoId);
+            ProductoAttributes producto = productoJsonApi.getAttributes();
+
             return new ConsultarInventarioResponse(
-            producto.getId(),
-            producto.getNombre(),
-            producto.getPrecio(),
-            inventario.get().getCantidad()
-        );
-        }else{
+                    productoId,
+                    producto.getNombre(),
+                    producto.getPrecio(),
+                    inventario.get().getCantidad()
+            );
+        } else {
             throw new InventarioNoEncontradoException(productoId);
         }
     }
+
+
 }

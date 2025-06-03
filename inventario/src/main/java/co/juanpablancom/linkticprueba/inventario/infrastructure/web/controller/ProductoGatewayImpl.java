@@ -5,9 +5,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import co.juanpablancom.linkticprueba.inventario.application.dto.ProductoResponse;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import co.juanpablancom.linkticprueba.inventario.application.port.query.ProductoGateway;
 import co.juanpablancom.linkticprueba.inventario.domain.exception.ProductoExternoNoEncontradoException;
+import co.juanpablancom.linkticprueba.inventario.infrastructure.web.controller.jsonapi.JsonApiProductoResponse;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -20,14 +23,23 @@ public class ProductoGatewayImpl implements ProductoGateway {
     private String productosServiceUrl;
 
     @Override
-    public ProductoResponse obtenerProductoPorId(long productoId) {
+    public JsonApiProductoResponse obtenerProductoPorId(long productoId) {
         try {
             String url = productosServiceUrl + "/productos/" + productoId;
-            return restTemplate.getForObject(url, ProductoResponse.class);
+            JsonNode root = restTemplate.getForObject(url, JsonNode.class);
+
+            if (root != null && root.has("data")) {
+                ObjectMapper mapper = new ObjectMapper();
+                return mapper.treeToValue(root.get("data"), JsonApiProductoResponse.class);
+            }
+
+            throw new RuntimeException("Respuesta sin campo 'data'");
         } catch (HttpClientErrorException.NotFound e) {
             throw new ProductoExternoNoEncontradoException(productoId);
         } catch (Exception e) {
             throw new RuntimeException("Error al consultar el producto con ID " + productoId, e);
         }
     }
+
+
 }

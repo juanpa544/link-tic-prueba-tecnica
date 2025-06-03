@@ -41,8 +41,8 @@ class ProductoRestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(crearProductoRequestValido)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nombre").value("Producto Test"))
-                .andExpect(jsonPath("$.precio").value(100.0));
+                .andExpect(jsonPath("$.data.attributes.nombre").value("Producto Test"))
+                .andExpect(jsonPath("$.data.attributes.precio").value(100.0));
     }
 
     @Test
@@ -64,11 +64,11 @@ class ProductoRestControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        long id = JsonPath.parse(response).read("$.id", Long.class);
+        long id = Long.parseLong(JsonPath.parse(response).read("$.data.id", String.class));
 
         mockMvc.perform(get("/productos/" + id))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nombre").value("Producto Test"));
+                .andExpect(jsonPath("$.data.attributes.nombre").value("Producto Test"));
     }
 
     @Test
@@ -80,7 +80,7 @@ class ProductoRestControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        long id = JsonPath.parse(response).read("$.id", Long.class);
+        long id = Long.parseLong(JsonPath.parse(response).read("$.data.id", String.class));
 
         ActualizarProductoRequest update = new ActualizarProductoRequest("Actualizado", 200.0);
 
@@ -88,8 +88,8 @@ class ProductoRestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(update)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nombre").value("Actualizado"))
-                .andExpect(jsonPath("$.precio").value(200.0));
+                .andExpect(jsonPath("$.data.attributes.nombre").value("Actualizado"))
+                .andExpect(jsonPath("$.data.attributes.precio").value(200.0));
     }
 
     @Test
@@ -101,7 +101,7 @@ class ProductoRestControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        long id = JsonPath.parse(response).read("$.id", Long.class);
+        long id = Long.parseLong(JsonPath.parse(response).read("$.data.id", String.class));
 
         mockMvc.perform(delete("/productos/" + id))
                 .andExpect(status().isNoContent());
@@ -116,7 +116,7 @@ class ProductoRestControllerTest {
                         .param("page", "0")
                         .param("size", "10"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content").isArray());
+                .andExpect(jsonPath("$.data").isArray());
     }
 }
 

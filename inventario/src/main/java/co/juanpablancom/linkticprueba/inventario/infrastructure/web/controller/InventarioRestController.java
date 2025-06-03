@@ -13,6 +13,7 @@ import co.juanpablancom.linkticprueba.inventario.application.dto.ActualizarInven
 import co.juanpablancom.linkticprueba.inventario.application.dto.CompraInventarioRequest;
 import co.juanpablancom.linkticprueba.inventario.application.dto.ConsultarInventarioResponse;
 import co.juanpablancom.linkticprueba.inventario.application.service.InventarioService;
+import co.juanpablancom.linkticprueba.inventario.infrastructure.web.controller.jsonapi.JsonApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -24,9 +25,14 @@ public class InventarioRestController {
     private final InventarioService inventarioService;
 
     @GetMapping("/{productoId}")
-    public ResponseEntity<ConsultarInventarioResponse> consultarInventario(@PathVariable("productoId") long productoId) {
+    public ResponseEntity<JsonApiResponse<ConsultarInventarioResponse>> consultarInventario(@PathVariable("productoId") long productoId) {
         ConsultarInventarioResponse response = inventarioService.consultarInventario(productoId);
-        return ResponseEntity.ok(response);
+        JsonApiResponse<ConsultarInventarioResponse> jsonApi = new JsonApiResponse<>(
+                "inventario",
+                String.valueOf(productoId),
+                response
+        );
+        return ResponseEntity.ok(jsonApi);
     }
 
     @PutMapping

@@ -1,7 +1,7 @@
 package co.juanpablancom.linkticprueba.inventario.application.port.query;
 
-import co.juanpablancom.linkticprueba.inventario.application.dto.ProductoResponse;
+import co.juanpablancom.linkticprueba.inventario.infrastructure.web.controller.jsonapi.JsonApiProductoResponse;
 
 public interface ProductoGateway {
-    ProductoResponse obtenerProductoPorId(long productoId);
+    JsonApiProductoResponse obtenerProductoPorId(long productoId);
 }

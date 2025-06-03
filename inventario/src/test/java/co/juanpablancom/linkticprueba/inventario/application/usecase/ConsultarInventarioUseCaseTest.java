@@ -1,11 +1,13 @@
 package co.juanpablancom.linkticprueba.inventario.application.usecase;
 
 import co.juanpablancom.linkticprueba.inventario.application.dto.ConsultarInventarioResponse;
-import co.juanpablancom.linkticprueba.inventario.application.dto.ProductoResponse;
+import co.juanpablancom.linkticprueba.inventario.application.dto.ProductoAttributes;
 import co.juanpablancom.linkticprueba.inventario.application.port.query.ProductoGateway;
 import co.juanpablancom.linkticprueba.inventario.domain.exception.InventarioNoEncontradoException;
 import co.juanpablancom.linkticprueba.inventario.domain.model.InventarioModel;
 import co.juanpablancom.linkticprueba.inventario.domain.port.query.InventarioQuery;
+import co.juanpablancom.linkticprueba.inventario.infrastructure.web.controller.jsonapi.JsonApiProductoResponse;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -32,10 +34,12 @@ public class ConsultarInventarioUseCaseTest {
         // Arrange
         long productoId = 123;
         InventarioModel inventario = new InventarioModel(productoId, 20);
-        ProductoResponse producto = new ProductoResponse(productoId, "Producto X", 50.0);
+
+        ProductoAttributes attributes = new ProductoAttributes("Producto X", 50.0);
+        JsonApiProductoResponse productoJsonApi = new JsonApiProductoResponse("producto", String.valueOf(productoId), attributes);
 
         when(inventarioQuery.obtenerPorProductoId(productoId)).thenReturn(Optional.of(inventario));
-        when(productoGateway.obtenerProductoPorId(productoId)).thenReturn(producto);
+        when(productoGateway.obtenerProductoPorId(productoId)).thenReturn(productoJsonApi);
 
         // Act
         ConsultarInventarioResponse resultado = consultarInventarioUseCase.ejecutar(productoId);
