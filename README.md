@@ -1,126 +1,101 @@
 # LinkTic - Prueba Técnica Backend
 
-## 🧠 Descripción General
+# 🧩 Microservicios: Productos e Inventarios
 
-Esta solución consiste en dos microservicios independientes que gestionan productos e inventario, comunicándose entre sí vía HTTP utilizando el estándar **JSON:API**. Los microservicios están desacoplados, orquestados mediante **Docker Compose**, y cada uno cuenta con su propia base de datos embebida (H2) para facilitar el despliegue y pruebas. Se han aplicado buenas prácticas de arquitectura hexagonal, pruebas y documentación.
-
----
-
-## 📦 Estructura del Proyecto
-
+Este proyecto está compuesto por dos microservicios: uno encargado de la gestión de productos y otro de la administración de inventario. Ambos se comunican utilizando el estándar [JSON:API](https://jsonapi.org/) y siguen una arquitectura **hexagonal**.
 
 ---
 
-## 🧩 Microservicios
+## ⚙️ Instrucciones de instalación y ejecución
 
-### 1. 🛒 **Microservicio de Productos**
-- **Responsabilidad:** Gestión CRUD de productos.
-- **Campos:** `id`, `nombre`, `precio`.
-- **Endpoints implementados:**
-  - `POST /productos`: Crear producto.
-  - `GET /productos/{id}`: Obtener producto por ID.
-  - `PUT /productos/{id}`: Actualizar producto por ID.
-  - `DELETE /productos/{id}`: Eliminar producto.
-  - `GET /productos`: Listar productos con paginación.
-- **Base de datos:** Embebida H2.
+### Requisitos
+- Java 21
+- Docker & Docker Compose
+- Maven 3.9+
+- Git
 
-### 2. 📦 **Microservicio de Inventario**
-- **Responsabilidad:** Consulta y actualización de inventario.
-- **Campos:** `producto_id`, `cantidad`.
-- **Endpoints implementados:**
-  - `GET /inventarios/{productoId}`: Consultar inventario (llama al microservicio de productos).
-  - `PUT /inventarios`: Actualizar inventario.
-  - `POST /inventarios/comprar`: Aplicar compra (verifica existencia del producto y stock disponible).
-- **Eventos:** Emisión de logs en consola al cambiar el inventario.
-- **Base de datos:** Embebida H2.
+### Pasos para ejecutar el proyecto
+
+1. **Clonar el repositorio**  
+   ```bash
+   git clone https://github.com/juanpa544/link-tic-prueba-tecnica
+   cd link-tic-prueba-tecnica
+   ```
+
+2. **Levantar los contenedores con Docker Compose**  
+   ```bash
+   docker-compose up
+   ```
+
+3. **Endpoints disponibles**
+
+   | Servicio       | URL base                  | Swagger                                     |
+   |----------------|---------------------------|---------------------------------------------|
+   | Productos      | http://localhost:8080     | http://localhost:8080/swagger-ui/index.html |
+   | Inventario     | http://localhost:8081     | http://localhost:8082/swagger-ui/index.html |
 
 ---
 
-## ⚙️ JSON:API
+## 🧱 Arquitectura
 
-Todos los endpoints devuelven respuestas de tipo JSON.API
+Se implementó **arquitectura hexagonal (Ports & Adapters)** para una alta separación de responsabilidades:
+
+- **Dominio**: contiene los modelos y lógica de negocio central.
+- **Aplicación**: casos de uso (services).
+- **Infraestructura**: puertos de entrada (REST Controllers) y puertos de salida (Repositorios, clientes HTTP).
+- **Adaptadores**: implementación concreta de puertos, como JPA, RestTemplate, etc.
+
+Cada microservicio es completamente independiente, facilitando el despliegue, la prueba y el escalado.
+
+---
+
+## 🧠 Decisiones técnicas y justificaciones
+
+- **Arquitectura Hexagonal** : Facilita pruebas, mantenibilidad y desacopla la lógica de negocio de la infraestructura.
+- **H2 (Base de datos embebida)** : Se optó por bases de datos embebidas por facilidad de configuración, no requiere instalaciones adicionales ni configuración de instancias externas, lo que permite que el entorno esté listo rápidamente.
+
+---
+
+## 🔁 Diagrama de interacción entre servicios
+
+```mermaid
+sequenceDiagram
+    participant Usuario
+    participant Productos
+    participant Inventario
+
+    Usuario->>Productos: POST /productos (Crear producto)
+    Productos-->>Usuario: JSON:API Response
+
+    Usuario->>Inventario: POST /inventarios/comprar
+    Inventario->>Productos: GET /productos/{id}
+    Productos-->>Inventario: JSON:API Response con producto
+    Inventario-->>Usuario: 204 No Content
+
+    Usuario->>Inventario: GET /inventarios/{productoId}
+    Inventario->>Productos: GET /productos/{id}
+    Productos-->>Inventario: JSON:API Response
+    Inventario-->>Usuario: JSON:API con producto + cantidad
+```
 
 ---
 
 ## 🧪 Pruebas
 
-### ✅ Pruebas Unitarias
-- Casos cubiertos:
-  - Creación de productos.
-  - Validaciones de dominio (`precio`, `nombre`, `productoId`, `cantidad`).
-  - Comunicación fallida entre microservicios.
-  - Reducción de inventario.
-  - Excepciones por producto duplicado o no encontrado.
-
-### ✅ Pruebas de Integración
-- Se valida:
-  - Persistencia en la base de datos embebida.
-  - API JSON consumida correctamente.
+- Pruebas unitarias con JUnit 5 y Mockito.
+- Pruebas de integración con `@SpringBootTest` y base de datos H2.
+- Controladores probados con `MockMvc`.
 
 ---
 
-## 🐳 Docker y Despliegue
+## 📦 Tecnologías utilizadas
 
-### 🔧 Requisitos
-- Docker Desktop
-
-### ▶️ Para ejecutar el sistema:
-```bash
-docker-compose up --build
-```
-Esto levantará ambos microservicios expuestos en:
-
-Productos: http://localhost:8080
-
-Inventario: http://localhost:8082
-
-Swagger disponible en:
-
-http://localhost:8082/swagger-ui/index.html
-
-http://localhost:8080/swagger-ui/index.html
-
-
-###📐 Arquitectura
-
-Comunicación HTTP entre microservicios.
-
-Validaciones y lógica encapsuladas en casos de uso (UseCase).
-
-Separación clara por capas (adaptadores, aplicación, dominio).
-
-Patrón de arquitectura Hexagonal (Ports & Adapters).
-
-## 🧑‍💻 Guía para Nuevos Desarrolladores
-1. Clona el proyecto.
-
-2. Asegúrate de tener Docker instalado.
-
-3. Ejecuta docker-compose up --build.
-
-4. Consulta la documentación Swagger.
-
-5. Ejecuta las pruebas con ./gradlew test.
-
-Agrega nuevas funcionalidades siguiendo el patrón de casos de uso y arquitectura hexagonal.
-
-## 📌 Consideraciones
-Se utilizaron bases de datos embebidas por simplicidad, velocidad de desarrollo y portabilidad.
-
-## 📚 Tecnologías Usadas
-Java 21
-
-Spring Boot 3
-
-JUnit 5, Mockito
-
-Swagger/OpenAPI
-
-Docker
-
-H2 Embedded Database
-
-REST + JSON:API
+- Java 21
+- Spring Boot 3.5
+- H2
+- Docker & Docker Compose
+- JSON:API
+- JUnit & Mockito
 
 ## ✅ Pendientes / Mejoras Futuras
 Implementar base de datos externa en producción.
@@ -128,8 +103,6 @@ Implementar base de datos externa en producción.
 Agregar monitoreo con Prometheus + Grafana.
 
 Registrar eventos en Kafka u otro broker.
-
-Agregar métricas e integraciones con Zipkin o Jaeger.
 
 ## 📬 Contacto
 Para cualquier duda técnica sobre esta implementación, puedes comunicarte con:
