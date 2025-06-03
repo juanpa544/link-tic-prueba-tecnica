@@ -32,8 +32,6 @@ public class ProductoRestController {
 
     @PostMapping
     public ResponseEntity<ProductoResponse> crearProducto(@RequestBody @Valid CrearProductoRequest request) {
-        System.out.println("🔍 Nombre recibido: " + request.getNombre());
-        System.out.println("💰 Precio recibido: " + request.getPrecio());
         ProductoModel productoCreado = productoService.crearProducto(request.getNombre(), request.getPrecio());
         return ResponseEntity.ok(ProductoDtoMapper.MAPPER.toResponse(productoCreado));
     }

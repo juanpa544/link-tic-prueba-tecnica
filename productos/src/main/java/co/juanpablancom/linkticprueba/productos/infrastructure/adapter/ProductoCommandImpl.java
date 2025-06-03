@@ -17,9 +17,7 @@ public class ProductoCommandImpl implements ProductoCommand {
 
     @Override
     public ProductoModel crear(ProductoModel productoModel) {
-        System.out.println("Model a guardar: nombre->"+productoModel.getNombre()+" precio->"+productoModel.getPrecio());
         ProductoEntity productoEntity = ProductoMapper.MAPPER.toEntity(productoModel);
-        System.out.println("Entity a guardar: nombre->"+productoEntity.getNombre()+" precio->"+productoEntity.getPrecio());
         ProductoModel productoCreado = ProductoMapper.MAPPER.toModel(productoCommandJpaRepository.save(productoEntity));
         return productoCreado;
     }
